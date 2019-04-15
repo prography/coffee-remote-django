@@ -1,22 +1,24 @@
 # -*- coding: utf-8 -*-
 
-import os
+import os, json
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# ROOT_DIR = os.path.dirname(BASE_DIR)
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '6m!kbklz@m#2p$^fp(8k3@=jkyl%x8n6s%d*%8f!16@&jjn9$='
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+SECRET_DIR = os.path.join(BASE_DIR, '.config_secret')
+SECRET_COMMON_FILE = os.path.join(SECRET_DIR, 'common.json')
+if DEBUG==True:
+    SECRET_FILE = os.path.join(SECRET_DIR, 'development.json')
+else:
+    SECRET_FILE = os.path.join(SECRET_DIR, 'deploy.json')
 
+secret_common = json.loads(open(SECRET_COMMON_FILE).read())
+secret_other = json.loads(open(SECRET_FILE).read())
+
+SECRET_KEY = secret_common['django']["secret_key"]
+ALLOWED_HOSTS = secret_other['django']['allowed_hosts']
 
 # Application definition
 
