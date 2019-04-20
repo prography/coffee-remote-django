@@ -7,7 +7,7 @@ from order import views as order_views
 
 router = DefaultRouter()
 router.register(r'menu', views.MenuViewSet)
-router.register(r'cart', order_views.OrderViewSet)
+router.register(r'order', order_views.OrderViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
