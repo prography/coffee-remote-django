@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from shop.models import Menu
+from menu.models import Menu
 
 
 class MenuSerializer(serializers.ModelSerializer):
