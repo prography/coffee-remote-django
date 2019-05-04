@@ -7,7 +7,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     price = models.IntegerField()
     pickuptime = models.IntegerField()
-    order = models.CharField()
+    order = models.CharField(max_length=50)
 
 
 

@@ -1,6 +1,9 @@
 from order.models import Order
 from rest_framework import viewsets
 from order.serializers import OrderSerializer
+from django.shortcuts import render, redirect
+import requests
+import json
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -12,3 +15,44 @@ class OrderViewSet(viewsets.ModelViewSet):
     """
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
+#토큰을 얻을 코드 구하기 - 카카오측에서 아래 함수로 redirect해줌.
+def oauthCode(request):
+    context = {
+        'code': ''
+    }
+    return render(request, 'order/kakao.html', context)
+
+#리다이렉트되어 code를 얻어옴. 이를 통해 토큰을 발급받고 해당 유저 확인.
+def oauthCodeCallback(request):
+    #발급받은 code 얻어오고 이를 통해 토큰을 발급받기.
+    code = request.GET.get('code')
+    url = "https://kauth.kakao.com/oauth/token"
+    payload = "grant_type=authorization_code&" \
+              "client_id=e9324bb26945caf079b1b63862ff7347&" \
+              "redirect_uri=http://localhost:8000/accounts/kakao/login/callback/&" \
+              "code=" + code
+    headers = {
+        'Content-Type': "application/x-www-form-urlencoded",
+        'Cache-Control': "no-cache",
+    }
+    response = requests.request("POST", url, data=payload, headers=headers)
+    #토큰을 얻어옴.
+    tokens = json.loads((response.text).encode('utf-8'))
+    access_token = json.loads((response.text).encode('utf-8'))['access_token']
+    print(tokens)
+
+    #해당 토큰을 통해 유저 정보 확인해보기.
+    url = "https://kapi.kakao.com/v2/user/me"
+    headers = {
+        'Content-Type': "application/x-www-form-urlencoded",
+        'Cache-Control': "no-cache",
+        'Authorization': "Bearer " + access_token
+    }
+    response = requests.request("POST", url, headers=headers)
+    print(response.text)
+
+    context = {
+        'code': access_token
+    }
+    return render(request, 'order/kakao.html', context)
