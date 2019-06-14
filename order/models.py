@@ -6,7 +6,7 @@ class Order(models.Model):
     unique_id = models.CharField(max_length=30, default=0)
     created_at = models.DateTimeField(default=timezone.now)
     price = models.IntegerField()
-    pickuptime = models.IntegerField()
+    # pickuptime = models.IntegerField()
     order = models.CharField(max_length=50)
 
 
