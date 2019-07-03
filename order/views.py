@@ -1,10 +1,13 @@
 from order.models import Order
 from rest_framework import viewsets
 from order.serializers import OrderSerializer
+from allauth.socialaccount.providers.kakao.views import KakaoOAuth2Adapter
+from rest_auth.registration.views import SocialLoginView
 # from django.shortcuts import render, redirect
 # import requests
 # import json
-
+class KakaoLogin(SocialLoginView):
+    adapter_class = KakaoOAuth2Adapter
 
 class OrderViewSet(viewsets.ModelViewSet):
     """
