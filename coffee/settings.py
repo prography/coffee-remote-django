@@ -22,6 +22,8 @@ secret_other = json.loads(open(SECRET_FILE).read())
 SECRET_KEY = secret_common['django']["secret_key"]
 ALLOWED_HOSTS = secret_other['django']['allowed_hosts']
 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 INSTALLED_APPS = [
@@ -32,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'corsheaders',
     'menu',
     'order',
     'rest_framework',
@@ -41,7 +44,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.kakao',
-    'social_django'
+    'social_django',
+    'rest_framework.authtoken',
 ]
 SITE_ID = 1
 # social-auth-app-django
@@ -64,6 +68,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'coffee.urls'
