@@ -14,7 +14,7 @@ router.register(r'menu', menu_views.MenuViewSet)
 router.register(r'order', order_views.OrderViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('rest-auth/kakao/', order_views.KakaoLogin.as_view(), name='kakao_login'),
+    path('rest-auth/kakao/', kakao_views.KakaoLogin.as_view(), name='kakao_login'),
     # path('accounts/kakao/login/', order_views.oauthCode),
     # path('accounts/kakao/login/callback/', order_views.oauthCodeCallback),
     # path('accounts/kakao/logout/', order_views.oauthLogOut),
