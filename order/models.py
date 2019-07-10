@@ -1,13 +1,19 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 class Order(models.Model):
-    unique_id = models.CharField(max_length=30, default=0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
     price = models.IntegerField()
     # pickuptime = models.IntegerField()
     order = models.CharField(max_length=50)
+    tid = models.CharField(
+        max_length=30,
+        null=True
+    )
+    is_paid = models.BooleanField(default=False)
 
 
 
